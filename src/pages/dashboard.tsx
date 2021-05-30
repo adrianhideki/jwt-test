@@ -2,6 +2,8 @@ import { GetServerSideProps } from "next";
 import { destroyCookie } from "nookies";
 import { useEffect } from "react";
 import { useAuthContext } from "../../context/AuthContext";
+import { Can } from "../components/Can";
+import { useCan } from "../hooks/useCan";
 import { setupAPIClient } from "../services/api";
 import { api } from "../services/apiClient";
 import { AuthTokenError } from "../services/errors/AuthTokenError";
@@ -17,7 +19,14 @@ export default function Dashboard() {
       .catch((err) => console.log(err));
   }, []);
 
-  return <h1>Dashboard: {user?.email}</h1>;
+  return (
+    <>
+      <h1>Dashboard: {user?.email}</h1>
+      <Can permissions={["metrics.list"]}>
+        <div>Métricas</div>
+      </Can>
+    </>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = withSSRAuth(
