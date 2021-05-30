@@ -1,16 +1,13 @@
 import { GetServerSideProps } from "next";
-import { destroyCookie } from "nookies";
 import { useEffect } from "react";
-import { useAuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { Can } from "../components/Can";
-import { useCan } from "../hooks/useCan";
 import { setupAPIClient } from "../services/api";
 import { api } from "../services/apiClient";
-import { AuthTokenError } from "../services/errors/AuthTokenError";
 import { withSSRAuth } from "../utils/withSSRAuth";
 
 export default function Dashboard() {
-  const { user } = useAuthContext();
+  const { user, signOut } = useAuthContext();
 
   useEffect(() => {
     api
@@ -22,6 +19,7 @@ export default function Dashboard() {
   return (
     <>
       <h1>Dashboard: {user?.email}</h1>
+      <button onClick={signOut}>Sign Out</button>
       <Can permissions={["metrics.list"]}>
         <div>Métricas</div>
       </Can>
